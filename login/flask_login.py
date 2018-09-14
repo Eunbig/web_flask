@@ -56,6 +56,14 @@ def login_check(usr_id, usr_pw):
     rv.close()
     return res
 
+def modify_db(usr_id, usr_pw, usr_mail):
+    h_usr_pw = hashlib.sha224(usr_pw).hexdigest()
+    sql = "update usr_table SET usr_pw = '%s' , usr_mail = '%s' where usr_id = '%s'" % (h_usr_pw, usr_mail, usr_id)
+    db = get_db()
+    db.execute(sql)
+    res = db.commit()
+    return res
+
 @app.route('/')
 def index():
     if 'usr_id' in session:
@@ -113,7 +121,25 @@ def secret():
         return redirect(url_for('index'))
     return ''
 
-
+@app.route('/modify', methods=['GET', 'POST'])
+def modify():
+    if request.method == 'GET':
+        if 'usr_id' in session:
+            data = find_usrmail(escape(session['usr_id']))
+            res = ()
+            res = (data['usr_mail'], escape(session['usr_id']))
+            return render_template('modify.html', data=res)
+        else:
+            return redirect(url_for('index'))
+    else:
+        if 'usr_id' in session:
+            req_pw = request.form.get('usr_pw')
+            req_mail = request.form.get('usr_mail')
+            res = modify_db(escape(session['usr_id']),req_pw, req_mail)
+            return redirect(url_for('index'))
+        else:
+            return "Error"
+    return ''
 
 if __name__ == '__main__':
     app.secret_key = 'A0Zr98j/3yX R~XHH!jmN]LWX/,?RT'
