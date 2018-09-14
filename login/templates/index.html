@@ -8,6 +8,14 @@
     <button type="submit">Logout</button>
   </form>
   <a href='/modify'>Edit_info</a>
+  <br>
+  <p> Search ID </p>
+  <form name="search_id" action="/" method="POST">
+    <input type="text" name="search_id"><br><br>
+    <input type="submit"><br>
+  </form>
+  {{ data[3] }}
+
 
   {% else %}
   <p> You should login first </p>

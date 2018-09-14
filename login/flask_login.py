@@ -76,15 +76,32 @@ def add_login_count(usr_id):
     res = db.commit()
     return res
 
-@app.route('/')
+def search_id(data):
+    sql = "select usr_id from usr_table where usr_id LIKE '%{}%'".format(data)
+    db = get_db()
+    rv = db.execute(sql)
+    res = rv.fetchall()
+    rv.close()
+    return res
+
+@app.route('/', methods=['GET', 'POST'])
 def index():
-    if 'usr_id' in session:
-        data = find_usrmail(escape(session['usr_id']))
-        res = () # data[0][0] = usr_mail  data[0][1] = login_count
-        res = (data[0][0],escape(session['usr_id']),data[0][1])
-        return render_template('index.html',data = res)
+    if request.method == 'GET':
+        if 'usr_id' in session:
+            data = find_usrmail(escape(session['usr_id']))
+            res = () # data[0][0] = usr_mail  data[0][1] = login_count
+            res = (data[0][0],escape(session['usr_id']),data[0][1],'')
+            return render_template('index.html',data = res)
+        else:
+            return render_template('index.html',data = '')
     else:
-        return render_template('index.html',data = '')
+        req_data = request.form.get('search_id')
+        res = search_id(req_data)
+        if res:
+            return res[0][0]
+        else:
+            return redirect(url_for('index'))
+
 
 @app.route('/login', methods=['GET','POST'])
 def login():
@@ -139,7 +156,7 @@ def modify():
         if 'usr_id' in session:
             data = find_usrmail(escape(session['usr_id']))
             res = ()
-            res = (data['usr_mail'], escape(session['usr_id']))
+            res = (data[0][0], escape(session['usr_id']))
             return render_template('modify.html', data=res)
         else:
             return redirect(url_for('index'))
