@@ -2,7 +2,7 @@ from flask import Flask, request, render_template, g, redirect, url_for, session
 import sqlite3
 import hashlib
 
-DATABASE = './db/ex5.db'
+DATABASE = './db/usr.db'
 app = Flask(__name__)
 
 def init_db():
@@ -117,4 +117,4 @@ def secret():
 
 if __name__ == '__main__':
     app.secret_key = 'A0Zr98j/3yX R~XHH!jmN]LWX/,?RT'
-    app.run(debug=True , port=8989, host='0.0.0.0')
+    app.run(debug=True , port=11000, host='0.0.0.0')
