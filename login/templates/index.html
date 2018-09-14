@@ -2,6 +2,7 @@
   {% if data %}
   <p> Hi {{ data[1] }} ~ </p>
   <p> Your Email is {{ data[0] }} ~ </p>
+  <p> You Login {{ data[2] }} times~ </p>
   <p> <a href=mailto:"{{ data[0] }}">Send mail</a></p>
   <form name="delete_session" action="/delete" method="POST">
     <button type="submit">Logout</button>

@@ -37,13 +37,13 @@ def show_allusr():
     return res
 
 def find_usrmail(usr_id):
-    sql = "select (usr_mail) from usr_table where usr_id = '%s'" % (usr_id)
+    sql = "select usr_mail, login_cnt from usr_table where usr_id = '%s'" % (usr_id)
     db = get_db()
     rv = db.execute(sql)
     res = rv.fetchall()
     rv.close()
     if res:
-        return res[0]
+        return res
     else:
         return ''
 
@@ -64,12 +64,24 @@ def modify_db(usr_id, usr_pw, usr_mail):
     res = db.commit()
     return res
 
+def add_login_count(usr_id):
+    sql = "select login_cnt from usr_table where usr_id = '%s'" % (usr_id)
+    db = get_db()
+    rv = db.execute(sql)
+    cnt = rv.fetchall()
+    rv.close()
+    sql = "update usr_table SET login_cnt = '%d'" % (cnt[0][0]+1)
+    db = get_db()
+    db.execute(sql)
+    res = db.commit()
+    return res
+
 @app.route('/')
 def index():
     if 'usr_id' in session:
         data = find_usrmail(escape(session['usr_id']))
-        res = ()
-        res = (data['usr_mail'],escape(session['usr_id']))
+        res = () # data[0][0] = usr_mail  data[0][1] = login_count
+        res = (data[0][0],escape(session['usr_id']),data[0][1])
         return render_template('index.html',data = res)
     else:
         return render_template('index.html',data = '')
@@ -85,9 +97,9 @@ def login():
         req_id = request.form.get('usr_id')
         req_pw = request.form.get('usr_pw')
         chk = login_check(req_id, req_pw)
-        print chk
         if chk:
             session['usr_id'] = req_id
+            add_login_count(req_id)
         return redirect(url_for('login'))
     return ''
 
