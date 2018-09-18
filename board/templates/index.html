@@ -1,0 +1,19 @@
+<body>
+  <H1>Index Page</H1>
+  {% if data %}
+  <p>  {{ data }}  </p>
+  <form name="delete_session" action="/logout" method="POST">
+    <button type="submit">Logout</button>
+  </form>
+  <a href='/useredit'>Edit_info</a><br>
+  <a href='/board'>Board</a>
+
+  <br>
+
+  {% else %}
+  <p> You should login first </p>
+  <a href='/login'>Login</a>
+  <a href='/join'>Join</a>
+  {% endif %}
+</body>
+

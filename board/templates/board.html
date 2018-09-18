@@ -1,0 +1,22 @@
+<body>
+  <H1>Board form</H1>
+  <table border="1">
+    <tr>
+      <th>id</th>
+      <th>Title</th>
+      <th>Writer</th>
+      <th>date</th>
+    </tr>
+    {% if data %}
+    {% for i in data %}
+    <tr>
+    <th>{{ i[0] }}</th>
+    <th><a href=/board/{{ i[0] }}>{{ i[1] }}</a></th>
+    <th>{{ i[2] }}</th>
+    <th>{{ i[3] }}</th>
+    </tr>
+    {% endfor %}
+  </table>
+  {% endif %}
+  <a href=/board_write>Write</a><br>
+</body>
