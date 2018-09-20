@@ -2,18 +2,16 @@
   <H1>Index Page</H1>
   {% if data %}
   <p>  {{ data }}  </p>
-  <form name="delete_session" action="/logout" method="POST">
-    <button type="submit">Logout</button>
-  </form>
-  <a href='/useredit'>Edit_info</a><br>
-  <a href='/board'>Board</a>
-
+  <button type="button" onclick="location.href='/logout'">로그아웃</button>&nbsp;
+  <button type="button" onclick="location.href='/useredit'">사용자 수정</button>&nbsp;
+  <button type="button" onclick="location.href='/board'">게시판</button><br>
   <br>
-
   {% else %}
   <p> You should login first </p>
-  <a href='/login'>Login</a>
-  <a href='/join'>Join</a>
+  <button type="button" onclick="location.href='/login'">로그인</button>&nbsp;
+  <button type="button" onclick="location.href='/join'">회원가입</button><br><br>
+  <button type="button" onclick="location.href='/guest'">테스트계정 생성</button><br>
+
   {% endif %}
 </body>
 

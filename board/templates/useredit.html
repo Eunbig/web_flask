@@ -2,8 +2,11 @@
   <form name='edit_usr' action='/useredit' method='POST'>
     ID<br> {{ data[1] }}<br>
     PW<br> <input type='password' name='usr_pw'><br>
-    MAIL<br> <input type='text' name='usr_mail' value= {{ data[0] }}><br>
-    <br> <input type='submit'>
+    MAIL<br> <input type='text' name='usr_mail' value= {{ data[0][0]['usr_mail'] }}><br>
+    PHONE<br> <input type='text' name='usr_phone' value= {{ data[0][0]['usr_phone'] }}><br>
+    <br> 
+    <button type='submit'>수정</button>&nbsp;
+    <button type="button" onclick="location.href='/'">취소</button>
   </form>
 </body>
 

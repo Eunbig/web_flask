@@ -3,19 +3,32 @@
   <table border="1">
     <tr>
     <td>Title</td>
-    <td>{{ data[0][0] }}</td>
+    <td>{{ data[0]['b_title'] }}</td>
     </tr>
     <tr>
     <td>Writer</td>
-    <td>{{ data[0][1] }}</td>
+    <td>{{ data[0]['b_writer'] }}</td>
     </tr>
     <tr>
     <td>Content</td>
-    <td>{{ data[0][2] }}</td>
+    <td>{{ data[0]['b_data'] }}</td>
     </tr>
     <tr>
     <td>Date</td>
-    <td>{{ data[0][3] }}</td>
+    <td>{{ data[0]['dt'] }}</td>
     </tr>
+    {% if data[0]['b_filepath'] %}
+    {% set filename = data[0]['b_filepath'].split('/')[2] %}
+    <tr>
+      <td>File</td>
+      <td><a href='{{ data[0]['b_filepath'][1:] }}'>{{ data[0]['b_filename'] }}</a></td>
+    </tr>
+    {% endif %}
   </table>
+  <br>
+  <button type="button" onclick="location.href='/board'">목록</button>&nbsp;
+  {% if b_right == "true" %}
+  <button type="button" onclick="location.href='/board_edit/{{ data[0]['idx'] }}'">수정</button>&nbsp;
+  <button type="button" onclick="location.href='/board_delete/{{ data[0]['idx'] }}'">삭제</button>
+  {% endif %}
 </body>
