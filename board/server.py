@@ -256,7 +256,7 @@ def board_edit(board_idx):
                 return script_alert("Not good extension")
             res = board_edit_db(board_idx, req_title, req_data, file_name, file_path)
         else:
-            res = board_edit_db(board_idx, req_title, req_data)
+            res = board_edit_db(board_idx, req_title, req_data, '', '')
         return redirect(url_for('board'))
     return ''
 
