@@ -26,6 +26,32 @@
     {% endif %}
   </table>
   <br>
+  {% for i in r_data %}
+  {% if usr == i['rep_writer'] %}
+  <br>----------------<br>
+  <form name=r_edit action=/board/{{ data[0]['idx']}} method="POST">
+    <input type=hidden name=r_idx value={{ i['idx'] }}>
+    Name: {{ i['rep_writer'] }}<br>
+    <input type=hidden name=r_writer value='{{ i['rep_writer'] }}'>
+    Text: {{ i['rep_data'] }}<br>
+    <input type=text name=r_data>
+    <button type="submit" name="r_edit">수정</button>
+  </form>
+  {% else %}
+  <br>----------------<br>
+  Name: {{ i['rep_writer'] }}<br>
+  Text: {{ i['rep_data'] }}
+  {% endif %}
+  {% endfor %}
+ ################################ 
+  <br>
+  Write reply<br>
+  <form name=r_write action=/board/{{ data[0]['idx'] }} method="POST">
+    Content<br><input type=text name=r_data>
+    <button type="submit" name="r_write">작성</button>
+  </form>
+
+  <br>
   <button type="button" onclick="location.href='/board'">목록</button>&nbsp;
   {% if b_right == "true" %}
   <button type="button" onclick="location.href='/board_edit/{{ data[0]['idx'] }}'">수정</button>&nbsp;

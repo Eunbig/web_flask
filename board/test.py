@@ -68,22 +68,6 @@ def allowed_file(filename):
     return '.' in filename and \
         filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS
 
-def board_reply_right_chk(r_writer, r_idx):
-    sql = "select * from board_reply where idx = '%s' AND rep_writer = '%s'" % (r_idx, r_writer)
-    return fetch_db(sql)
-
-def board_reply_edit_db(rep_idx,rep_data):
-    sql = "update board_reply SET rep_data = '%s' dt = current_timestamp where idx = '%s'" % (rep_data, rep_idx)
-    return commit_db(sql)
-
-def board_reply_write_db(rep_writer, board_idx, rep_data):
-    sql = "insert into board_reply (rep_writer, board_idx, rep_data) values ('%s', '%s', '%s')" %(rep_writer, board_idx, rep_data)
-    return commit_db(sql)
-
-def board_reply_view_db(board_idx):
-    sql = "select * from board_reply where board_idx = '%s'" % (board_idx)
-    return fetch_db(sql)
-
 def join_db(usr_id, usr_pw, usr_mail, usr_phone):
     h_usr_pw = hashlib.sha224(usr_pw).hexdigest()
     sql = "insert into usr_table (usr_id, usr_pw, usr_mail, usr_phone) values ('%s', '%s', '%s', '%s')" % (usr_id, h_usr_pw, usr_mail, usr_phone)
@@ -217,7 +201,7 @@ def board_view(board_idx):
             else:
                 b_right = 'false'
             r_data = board_reply_view_db(board_idx)
-            return render_template('board_view.html',data=res,b_right=b_right,r_data=r_data,usr=escape(session['usr_id']))
+            return render_template('board_view.html',data=res,b_right=b_right,r_data=r_data)
         else:
             return redirect(url_for('index'))
         return ''
@@ -225,7 +209,7 @@ def board_view(board_idx):
         if 'r_edit' in request.form:
             req_data = request.form.get('r_data')
             req_idx = request.form.get('r_idx')
-            if board_reply_right_chk(escape(session['usr_id']), req_idx):
+            if board_right_chk(escape(session['usr_id']), 'r_idx'):
                 res = board_reply_edit_db(req_idx,req_data)
             else:
                 return script_alert("You are not writer")
@@ -233,11 +217,6 @@ def board_view(board_idx):
             req_data = request.form.get('r_data')
             res = board_reply_write_db(escape(session['usr_id']),board_idx,req_data)
             return redirect(url_for('board_view', board_idx=board_idx))
-        else:
-            return script_alert("something wrong...")
-        return redirect(url_for('board_view',board_idx=board_idx))
-    return ''
-
 
 @app.route('/board_write', methods=['GET', 'POST'])
 def board_write():
@@ -309,6 +288,5 @@ def board_delete(board_idx):
     return ''
 
 if __name__ == '__main__':
-    #init_db()
     app.secret_key = 'wlqdprkrhtlqEk'
     app.run(debug=True, port=8989, host='0.0.0.0')
