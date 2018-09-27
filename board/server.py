@@ -73,7 +73,7 @@ def board_reply_right_chk(r_writer, r_idx):
     return fetch_db(sql)
 
 def board_reply_edit_db(rep_idx,rep_data):
-    sql = "update board_reply SET rep_data = '%s' dt = current_timestamp where idx = '%s'" % (rep_data, rep_idx)
+    sql = "update board_reply SET rep_data = '%s', dt = current_timestamp where idx = '%s'" % (rep_data, rep_idx)
     return commit_db(sql)
 
 def board_reply_write_db(rep_writer, board_idx, rep_data):
@@ -83,6 +83,10 @@ def board_reply_write_db(rep_writer, board_idx, rep_data):
 def board_reply_view_db(board_idx):
     sql = "select * from board_reply where board_idx = '%s'" % (board_idx)
     return fetch_db(sql)
+
+def board_reply_delete_db(rep_idx):
+    sql = "delete from board_reply where idx = '%s'" % (rep_idx)
+    return commit_db(sql)
 
 def join_db(usr_id, usr_pw, usr_mail, usr_phone):
     h_usr_pw = hashlib.sha224(usr_pw).hexdigest()
@@ -233,6 +237,13 @@ def board_view(board_idx):
             req_data = request.form.get('r_data')
             res = board_reply_write_db(escape(session['usr_id']),board_idx,req_data)
             return redirect(url_for('board_view', board_idx=board_idx))
+        elif 'r_del' in request.form:
+            req_idx = request.form.get('r_idx')
+            if board_reply_right_chk(escape(session['usr_id']),req_idx):
+                res = board_reply_delete_db(req_idx)
+                return redirect(url_for('board_view', board_idx=board_idx))
+            else:
+                return script_alert("You are not writer")
         else:
             return script_alert("something wrong...")
         return redirect(url_for('board_view',board_idx=board_idx))

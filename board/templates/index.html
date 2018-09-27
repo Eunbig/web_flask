@@ -1,17 +1,25 @@
-<body>
-  <H1>Index Page</H1>
-  {% if data %}
-  <p>  {{ data }}  </p>
-  <button type="button" onclick="location.href='/logout'">로그아웃</button>&nbsp;
-  <button type="button" onclick="location.href='/useredit'">사용자 수정</button>&nbsp;
-  <button type="button" onclick="location.href='/board'">게시판</button><br>
-  <br>
-  {% else %}
-  <p> You should login first </p>
-  <button type="button" onclick="location.href='/login'">로그인</button>&nbsp;
-  <button type="button" onclick="location.href='/join'">회원가입</button><br><br>
-  <button type="button" onclick="location.href='/guest'">테스트계정 생성</button><br>
+<!DOCTYPE html>
+<html>
+  <head>
+    <br><link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+  </head>
+  <body>
+    <div id='wrapper'>
+      <H1>Index Page</H1>
+      {% if data %}
+      <p>  {{ data }}  </p>
+      <button type="button" onclick="location.href='/logout'">로그아웃</button>&nbsp;
+      <button type="button" onclick="location.href='/useredit'">사용자 수정</button>&nbsp;
+      <button type="button" onclick="location.href='/board'">게시판</button><br>
+      <br>
+      {% else %}
+      <p> You should login first </p>
+      <button type="button" onclick="location.href='/login'">로그인</button>&nbsp;
+      <button type="button" onclick="location.href='/join'">회원가입</button><br><br>
+      <button type="button" onclick="location.href='/guest'">테스트계정 생성</button><br>
 
-  {% endif %}
-</body>
+      {% endif %}
+    </div>
+  </body>
+</html>
 

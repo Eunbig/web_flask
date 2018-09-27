@@ -1,3 +1,5 @@
+<br><br><link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+
 <body>
   <H1>Board-View Form</H1>
   <table border="1">
@@ -36,6 +38,7 @@
     Text: {{ i['rep_data'] }}<br>
     <input type=text name=r_data>
     <button type="submit" name="r_edit">수정</button>
+    <button type="submit" name="r_del">삭제</button>
   </form>
   {% else %}
   <br>----------------<br>
@@ -43,7 +46,7 @@
   Text: {{ i['rep_data'] }}
   {% endif %}
   {% endfor %}
- ################################ 
+  <br>################################ 
   <br>
   Write reply<br>
   <form name=r_write action=/board/{{ data[0]['idx'] }} method="POST">
