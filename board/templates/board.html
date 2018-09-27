@@ -1,27 +1,43 @@
-<br><br><link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+<!DOCTYPE html>
+<html>
+  <head>
+    {% include 'head.html' %}
+  </head>
+  <body>
+    {% include 'nav.html' %}
+    <div class="container theme-showcase" role="main">
+      <div class="page-header">
 
-<body>
-  <H1>Board form</H1>
-  <table border="1">
-    <tr>
-      <th>id</th>
-      <th>Title</th>
-      <th>Writer</th>
-      <th>date</th>
-    </tr>
-    {% if data %}
-    {% for i in data %}
-    <tr>
-    <th>{{ i[0] }}</th>
-    <th><a href=/board/{{ i[0] }}>{{ i[1] }}</a></th>
-    <th>{{ i[2] }}</th>
-    <th>{{ i[3] }}</th>
-    </tr>
-    {% endfor %}
-  </table>
-  {% endif %}
-  <br>
-  <button type="button" onclick="location.href='/board_write'">글작성</button>&nbsp;
-  <button type="button" onclick="location.href='/logout'">로그아웃</button>&nbsp;
-  <button type="button" onclick="location.href='/'">메인</button>
-</body>
+        <H1>Board form</H1>
+        <div class="row">
+          <div class="col-md-6">
+            <table class="table">
+              <thead>
+                <tr>
+                  <th>id</th>
+                  <th>Title</th>
+                  <th>Writer</th>
+                  <th>date</th>
+                </tr>
+              </thead>
+              <tbody>
+                {% if data %}
+                {% for i in data %}
+                <tr>
+                  <th>{{ i[0] }}</th>
+                  <th><a href=/board/{{ i[0] }}>{{ i[1] }}</a></th>
+                  <th>{{ i[2] }}</th>
+                  <th>{{ i[3] }}</th>
+                </tr>
+                {% endfor %}
+              </tbody>
+            </table>
+          </div>
+        </div>
+        <button type="button" class="btn btn-primary" onclick="location.href='/board_write'">Write</button>
+      </div>
+    </div>
+    {% endif %}
+  </body>
+</html>
+

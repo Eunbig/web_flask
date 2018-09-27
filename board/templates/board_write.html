@@ -1,15 +1,27 @@
-<br><br><link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
-
-<body>
-  <H1>Board-Write Form</H1>
-  <form name=b_write action=/board_write method="POST" enctype="multipart/form-data">
-    Title<br><input type=text name=b_title><br>
-    Writer<br><input type=text value={{ data }} readonly><br>
-    Text<br><textarea name="b_data" cols='40' rows='10'></textarea><br>
-    File<br><input type=file name=b_file><br>
-    <br>
-    <button type=submit>작성</button>&nbsp;
-    <button type="button" onclick="location.href='/board'">취소</a>
-  </form>
-</body>
-
+<!DOCTYPE html>
+<html>
+  <head>
+    {% include 'head.html' %}
+  </head>
+  <body>
+    {% include 'nav.html' %}
+    <div class="container theme-showcase" role="main">
+      <div class="page-header">
+        <div class="row">
+          <div class="mb-3">
+            <h1>Board-Write Form</h1>
+            <form name=b_write action=/board_write method="POST" enctype="multipart/form-data">
+              Title<br><input type=text class="form-control" name=b_title><br>
+              Writer<br><input type=text class="form-control" value={{ data }} readonly><br>
+              Content<br><textarea name="b_data" class="form-control" cols='40' rows='10'></textarea><br>
+              File<br><input type=file name=b_file><br>
+              <br>
+              <button type="submit" class="btn btn-xs btn-primary">Write</button>&nbsp;
+              <button type="button" class="btn btn-xs btn-primary" onclick="location.href='/board'">Cancel</a>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+  </body>
+</html>

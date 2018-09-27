@@ -4,7 +4,7 @@ from datetime import datetime
 import sqlite3
 import hashlib
 import os
-
+import random
 
 DATABASE = './db/usr.db'
 app = Flask(__name__, static_folder='uploads')
@@ -64,6 +64,10 @@ def board_delete_db(board_idx):
     sql = "delete from board where idx = '%s'" % (board_idx)
     return commit_db(sql)
 
+def board_delete_reply_db(board_idx):
+    sql = "delete from board_reply where board_idx = '%s'" % (board_idx)
+    return commit_db(sql)
+
 def allowed_file(filename):
     return '.' in filename and \
         filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS
@@ -98,9 +102,9 @@ def login_check(usr_id, usr_pw):
     sql = "select * from usr_table where usr_id = '%s' AND usr_pw = '%s'" % (usr_id, h_usr_pw)
     return fetch_db(sql)
 
-def usredit_db(usr_id, usr_pw, usr_mail):
+def usredit_db(usr_id, usr_pw, usr_mail, usr_phone):
     h_usr_pw = hashlib.sha224(usr_pw).hexdigest()
-    sql = "update usr_table SET usr_pw = '%s' , usr_mail = '%s' where usr_id = '%s'" % (h_usr_pw, usr_mail, usr_id)
+    sql = "update usr_table SET usr_pw = '%s' , usr_mail = '%s', usr_phone= '%s' where usr_id = '%s'" % (h_usr_pw, usr_mail,usr_phone, usr_id)
     return commit_db(sql)
 
 def usr_info_find_db(usr_id):
@@ -196,7 +200,8 @@ def useredit():
         if 'usr_id' in session:
             req_pw = request.form.get('usr_pw')
             req_mail = request.form.get('usr_mail')
-            res = usredit_db(escape(session['usr_id']),req_pw, req_mail)
+            req_phone = request.form.get('usr_phone')
+            res = usredit_db(escape(session['usr_id']),req_pw, req_mail, req_phone)
             return redirect(url_for('index'))
         else:
             return "Error"
@@ -264,9 +269,9 @@ def board_write():
         if 'b_file' in request.files:
             req_file = request.files['b_file']
             if allowed_file(req_file.filename):
-                file_name = secure_filename(req_file.filename)
+                file_name = "Secure_"+secure_filename(req_file.filename)
                 h_file_name = hashlib.md5(file_name+str(datetime.now().second)).hexdigest()
-                file_path = './uploads/' + h_file_name + "." + file_name.rsplit('.')[1]
+                file_path = './uploads/' + h_file_name + "." + file_name.rsplit('.')[-1]
                 req_file.save(file_path)
             else:
                 return script_alert("Not good extension")
@@ -295,8 +300,10 @@ def board_edit(board_idx):
             req_file = request.files['b_file']
             if allowed_file(req_file.filename):
                 file_name = secure_filename(req_file.filename)
+                if file_name == None:
+                    file_name = str(datetime.now())
                 h_file_name = hashlib.md5(file_name+str(datetime.now().second)).hexdigest()
-                file_path = './uploads/' + h_file_name + "." + file_name.rsplit('.')[1]
+                file_path = './uploads/' + h_file_name + "." + file_name.rsplit('.')[-1]
                 req_file.save(file_path)
             else:
                 return script_alert("Not good extension")
@@ -312,6 +319,7 @@ def board_delete(board_idx):
         res = board_edit_info_db(board_idx, escape(session['usr_id']))
         if res:
             board_delete_db(board_idx)
+            board_delete_reply_db(board_idx)
             return redirect(url_for('board'))
         else:
             return script_alert("Only Writer can delete")

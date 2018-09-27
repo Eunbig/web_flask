@@ -1,25 +1,29 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <br><link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    {% include 'head.html' %}
   </head>
-  <body>
-    <div id='wrapper'>
-      <H1>Index Page</H1>
-      {% if data %}
-      <p>  {{ data }}  </p>
-      <button type="button" onclick="location.href='/logout'">로그아웃</button>&nbsp;
-      <button type="button" onclick="location.href='/useredit'">사용자 수정</button>&nbsp;
-      <button type="button" onclick="location.href='/board'">게시판</button><br>
-      <br>
-      {% else %}
-      <p> You should login first </p>
-      <button type="button" onclick="location.href='/login'">로그인</button>&nbsp;
-      <button type="button" onclick="location.href='/join'">회원가입</button><br><br>
-      <button type="button" onclick="location.href='/guest'">테스트계정 생성</button><br>
+  <body role="document">
+    {% include 'nav.html' %}
+    <main role="main" class="container">
+      <div class="jumbotron">
+        <h1>EunBig_flask_site</h1>
+        {% if data %}
+        <img src='http://images.battlecomics.co.kr/board/215812/image-boardid_215812-cut_0-w_1280-h_720-t_20160107002339.jpg' width="500px" height="300px">
+        <p class="lead">{{ data }}</p>
+        {% else %}
+        <img src='https://cdn-images-1.medium.com/max/1600/0*R7Je4ZntJJAI_uiP' width="500px" height="300px">
+        <p class="lead">You should login first</p>
+        {% endif %}
+      </div>
+    </main>
 
-      {% endif %}
-    </div>
+    <!-- Bootstrap core JavaScript
+      ================================================== -->
+      <!-- Placed at the end of the document so the pages load faster -->
+      <script src="{{ url_for('.static',filename='js/jquery.min.js')}}"></script>
+      <script src="{{ url_for('.static',filename='js/bootstrap.min.js')}}"></script>
+      <!-- IE10 viewport hack for Surface/desktop Windows 8 bug -->
   </body>
 </html>
 

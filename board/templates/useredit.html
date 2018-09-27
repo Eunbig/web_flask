@@ -1,14 +1,32 @@
-<br><br><link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device=width, initial-scale=1">
 
-<body>
-  <form name='edit_usr' action='/useredit' method='POST'>
-    ID<br> {{ data[1] }}<br>
-    PW<br> <input type='password' name='usr_pw'><br>
-    MAIL<br> <input type='text' name='usr_mail' value= {{ data[0][0]['usr_mail'] }}><br>
-    PHONE<br> <input type='text' name='usr_phone' value= {{ data[0][0]['usr_phone'] }}><br>
-    <br> 
-    <button type='submit'>수정</button>&nbsp;
-    <button type="button" onclick="location.href='/'">취소</button>
-  </form>
-</body>
-
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <title>Eunbig site</title>
+    <link href="{{url_for('.static', filename='css/bootstrap.min.css') }}" rel="stylesheet">
+    <link href="{{url_for('.static', filename='css/signin.css') }}" rel="stylesheet">
+    <script src="{{url_for('.static', filename='js/ie-emulation-modes-warning.js') }}"></script>
+  </head>
+  <body>
+    <div class="container">
+      <form class="form-signin" action="/useredit" method="POST">
+        <h2 class="form-signin-heading">Edit Form</h2>
+        <label for="inputId" class="sr-only">ID</label>
+        <input type="text" name="usr_id" id="usr_id" class="form-control" value="{{ data[1] }}" placeholder="ID" required autofocus>
+        <label for="inputPassword" class="sr-only">Password</label>
+        <input type="password" name="usr_pw" id="usr_pw" class="form-control" placeholder="Password" required>
+        <label for="inputEmail" class="sr-only">Email</label>
+        <input type="text" name="usr_mail" class="form-control" value="{{ data[0][0]['usr_mail'] }}" placeholder="Email" required>
+        <label for="inputPhone" class="sr-only">Phone</label>
+        <input type="text" name="usr_phone" class="form-control" value="{{ data[0][0]['usr_phone'] }}" placeholder="Phone" required><br>
+        <button class="btn btn-lg btn-primary btn-block" type="submit">Edit</button>
+      </form>
+      <button class="btn" onclick="location.href='/'">back_to_main</button>
+      </form>
+  </body>
+</html>

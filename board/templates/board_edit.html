@@ -1,15 +1,23 @@
-<br><br><link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
-
+<!DOCTYPE html>
+<html>
+  <head>
+    {% include 'head.html' %}
+  </head>
 <body>
+  {% include 'nav.html' %}
+  <div class="container theme-showcase" role="main">
+    <div class="page-header">
+      <div class="row">
+        <div class="mb-3">
   <H1>Board-Write Form</H1>
   <form name=b_edit action=/board_edit/{{ data[0]['idx'] }} method="POST" enctype="multipart/form-data">
-    Title<br><input type=text name=b_title value={{ data[0]['b_title'] }}><br>
-    Writer<br><input type=text value={{ data[0]['b_writer'] }} readonly><br>
-    Text<br><textarea name="b_data" cols='40' rows='10'>{{ data[0]['b_data'] }}</textarea><br>
+    Title<br><input type=text class="form-control" name=b_title value={{ data[0]['b_title'] }}><br>
+    Writer<br><input type=text class="form-control" value={{ data[0]['b_writer'] }} readonly><br>
+    Text<br><textarea name="b_data" class="form-control" cols='40' rows='10'>{{ data[0]['b_data'] }}</textarea><br>
     File<br><input type=file name=b_file><br>
     <br>
-    <button type="submit">수정</button>&nbsp;
-    <button type="button" onclick='history.back()'>취소</button>
+    <button type="submit" class="btn btn-xs btn-primary">Edit</button>&nbsp;
+    <button type="button" class="btn btn-xs btn-primary" onclick='history.back()'>Cancel</button>
   </form>
 </body>
 

@@ -1,63 +1,93 @@
-<br><br><link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
-
-<body>
-  <H1>Board-View Form</H1>
-  <table border="1">
-    <tr>
-    <td>Title</td>
-    <td>{{ data[0]['b_title'] }}</td>
-    </tr>
-    <tr>
-    <td>Writer</td>
-    <td>{{ data[0]['b_writer'] }}</td>
-    </tr>
-    <tr>
-    <td>Content</td>
-    <td>{{ data[0]['b_data'] }}</td>
-    </tr>
-    <tr>
-    <td>Date</td>
-    <td>{{ data[0]['dt'] }}</td>
-    </tr>
-    {% if data[0]['b_filepath'] %}
-    {% set filename = data[0]['b_filepath'].split('/')[2] %}
-    <tr>
-      <td>File</td>
-      <td><a href='{{ data[0]['b_filepath'][1:] }}'>{{ data[0]['b_filename'] }}</a></td>
-    </tr>
-    {% endif %}
-  </table>
-  <br>
-  {% for i in r_data %}
-  {% if usr == i['rep_writer'] %}
-  <br>----------------<br>
-  <form name=r_edit action=/board/{{ data[0]['idx']}} method="POST">
-    <input type=hidden name=r_idx value={{ i['idx'] }}>
-    Name: {{ i['rep_writer'] }}<br>
-    <input type=hidden name=r_writer value='{{ i['rep_writer'] }}'>
-    Text: {{ i['rep_data'] }}<br>
-    <input type=text name=r_data>
-    <button type="submit" name="r_edit">수정</button>
-    <button type="submit" name="r_del">삭제</button>
-  </form>
-  {% else %}
-  <br>----------------<br>
-  Name: {{ i['rep_writer'] }}<br>
-  Text: {{ i['rep_data'] }}
-  {% endif %}
-  {% endfor %}
-  <br>################################ 
-  <br>
-  Write reply<br>
-  <form name=r_write action=/board/{{ data[0]['idx'] }} method="POST">
-    Content<br><input type=text name=r_data>
-    <button type="submit" name="r_write">작성</button>
-  </form>
-
-  <br>
-  <button type="button" onclick="location.href='/board'">목록</button>&nbsp;
-  {% if b_right == "true" %}
-  <button type="button" onclick="location.href='/board_edit/{{ data[0]['idx'] }}'">수정</button>&nbsp;
-  <button type="button" onclick="location.href='/board_delete/{{ data[0]['idx'] }}'">삭제</button>
-  {% endif %}
-</body>
+<!DOCTYPE html>
+<html>
+  <head>
+    {% include 'head.html' %}
+  </head>
+  <body>
+    {% include 'nav.html' %}
+    <div class="container theme-showcase" role="main">
+      <div class="page-header">
+        <H1>Board-View Form</H1>
+        <div class="row">
+          <div class="col-md-6">
+            <table class="table">
+              <tbody>
+                <tr>
+                  <td>Title</td>
+                  <td>{{ data[0]['b_title'] }}</td>
+                </tr>
+                <tr>
+                  <td>Writer</td>
+                  <td>{{ data[0]['b_writer'] }}</td>
+                </tr>
+                <tr>
+                  <td>Content</td>
+                  <td>{{ data[0]['b_data'] }}</td>
+                </tr>
+                <tr>
+                  <td>Date</td>
+                  <td>{{ data[0]['dt'] }}</td>
+                </tr>
+                {% if data[0]['b_filepath'] %}
+                {% set filename = data[0]['b_filepath'].split('/')[2] %}
+                <tr>
+                  <td>File</td>
+                  <td><a href='{{ data[0]['b_filepath'][1:] }}'>{{ data[0]['b_filename'] }}</a></td>
+                </tr>
+                {% endif %}
+              </tbody>
+            </table>
+            {% if b_right == "true" %}
+            <button type="button" class="btn btn-xs btn-primary" onclick="location.href='/board_edit/{{ data[0]['idx'] }}'">Edit</button>&nbsp;
+            <button type="button" class="btn btn-xs btn-primary" onclick="location.href='/board_delete/{{ data[0]['idx'] }}'">Delete</button>
+            {% endif %}
+            <button type="button" class="btn btn-xs btn-primary" onclick="history.back()">Cancel</button>
+            <br><br>
+            <h1>Comment Form</h1>
+            <table class="table">
+              <thead>
+                <tr>
+                  <th>Name</th>
+                  <th>Content</th>
+                  <th></th>
+                </tr>
+              </thead>
+              <tbody>
+                {% for i in r_data %}
+                {% if usr == i['rep_writer'] %}
+                <form name=r_edit action=/board/{{ data[0]['idx']}} method="POST">
+                  <input type=hidden name=r_idx value={{ i['idx'] }}>
+                  <input type=hidden name=r_writer value='{{ i['rep_writer'] }}'>
+                  <tr>
+                    <td>{{ i['rep_writer'] }}</td>
+                    <td>{{ i['rep_data'] }}</td>
+                    <td><button type="submit" class="btn btn-xs btn-primary" name="r_del">Delete</button></td>
+                  </tr>
+                  <tr>
+                    <th>Edit</th>
+                    <th><input type="text" class="form-control" name="r_data"></th>
+                    <th><button type="submit" class="btn btn-xs btn-primary" name="r_edit">Edit</button></th>
+                  </tr>
+                </form>
+                {% else %}
+                <tr>
+                  <td>{{ i['rep_writer'] }}</td>
+                  <td>{{ i['rep_data'] }}</td>
+                </tr>
+                {% endif %}
+                {% endfor %}
+              </tbody>
+            </table>
+            <br>
+            <h1>Write reply</h1>
+            <form name=r_write action=/board/{{ data[0]['idx'] }} method="POST">
+              <input type=text class="form-control" name=r_data><br>
+              <button type="submit" class="btn btn-xs btn-primary" name="r_write">Write</button>
+            </form>
+            <br>
+          </div>
+        </div>
+      </div>
+    </div>
+  </body>
+</html>
